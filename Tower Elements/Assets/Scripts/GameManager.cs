@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        ui_Manager = FindObjectOfType<UI_Manager>();
+        ui_Manager = GetComponent<UI_Manager>();
         gameisOver = false;
     }
 
