@@ -59,8 +59,8 @@ MonoBehaviour:
   speedModifier: 0.5
   effectTimer: 5
   damageOtherTargets: 10
-  singleTargerDamageMultiplier: 1.2
-  rangeOfEffect: 3
+  singleTargerDamageMultiplier: 1.5
+  rangeOfEffect: 10
   bulletPrefab: {fileID: 0}
   fireRate: 1
 --- !u!120 &6874335934493580608
@@ -107,7 +107,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.8
     widthCurve:
       serializedVersion: 2
       m_Curve:

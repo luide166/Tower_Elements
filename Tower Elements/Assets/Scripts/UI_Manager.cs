@@ -15,27 +15,12 @@ public class UI_Manager : MonoBehaviour
     public GameObject upgradeUI;
     public GameObject speelsUI;
 
-    void Update()
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
-        {
-            TogglePauseMenu();
-        }
+
     }
 
-    public void TogglePauseMenu()
-    {
-        pauseUI.SetActive(!pauseUI.activeSelf);
 
-        if (pauseUI.activeSelf)
-        {
-            Time.timeScale = 0f;
-        }
-        else
-        {
-            Time.timeScale = 1f;
-        }
-    }
 
 
 

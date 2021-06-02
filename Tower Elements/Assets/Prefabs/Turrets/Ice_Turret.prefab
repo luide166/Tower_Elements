@@ -255,7 +255,7 @@ MonoBehaviour:
   useLaser: 1
   lineRenderer: {fileID: 3064791131691834790}
   damageOverTime: 30
-  speedModifier: 0.2
+  speedModifier: 0.4
   effectTimer: 3
   damageOtherTargets: 0
   singleTargerDamageMultiplier: 0

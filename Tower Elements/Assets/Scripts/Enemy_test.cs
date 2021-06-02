@@ -239,119 +239,125 @@ public class Enemy_test : MonoBehaviour
         //Graphics
 
         //Mechanics
-        iceEffected = true;
-        iceEffectIcon.enabled = true;
-        speed *= (1f - _slowAmount);
-        Invoke("ResetIceEffect", _slowTime);
+        if(iceEffected == false)
+        {
+            iceEffected = true;
+            iceEffectIcon.enabled = true;
+            speed *= (1f - _slowAmount);
+            Invoke("ResetIceEffect", _slowTime);
+        }
     }
     public void IceRayEffect(float _range, float _enemyDamageOverTime, LineRenderer _renderer, float _slowAmount, float _slowTime, float _otherEnemyDamage, float _singleTargetDamageMultiplier)
     {
         //Graphics
 
         //Mechanics
-        this.iceRayEffected = true;
-        iceRayEffectIcon.enabled = true;
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        enemies = enemies.OrderBy(enemy => Vector3.Distance(this.transform.position, enemy.transform.position)).ToArray();
-        float shortestDistance = Mathf.Infinity;
-
-        //seleciona os dois targets
-        for (int i = 0; i < enemies.Length; i++)
+        if(iceRayEffected == false)
         {
-            float distanceToEnemy = Vector3.Distance(transform.position, enemies[i].transform.position);
+            this.iceRayEffected = true;
+            iceRayEffectIcon.enabled = true;
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            enemies = enemies.OrderBy(enemy => Vector3.Distance(this.transform.position, enemy.transform.position)).ToArray();
+            float shortestDistance = Mathf.Infinity;
 
-            if (distanceToEnemy < _range)
+            //seleciona os dois targets
+            for (int i = 0; i < enemies.Length; i++)
             {
-                if (!target1)
+                float distanceToEnemy = Vector3.Distance(transform.position, enemies[i].transform.position);
+
+                if (distanceToEnemy < _range)
                 {
-                    if (enemies[i] != this.gameObject)
+                    if (!target1)
                     {
-                        target1 = enemies[i];
-                        shortestDistance = Mathf.Infinity;
-                        print("nearest enemy OK");
-                    }
-                }
-                else if (!target2)
-                {
-                    if (enemies[i] != this.gameObject)
-                    {
-                        if (enemies[i] != target1)
+                        if (enemies[i] != this.gameObject)
                         {
-                            target2 = enemies[i];
-                            shortestDistance = distanceToEnemy;
-                            print("next enemy OK");
+                            target1 = enemies[i];
+                            shortestDistance = Mathf.Infinity;
+                            print("nearest enemy OK");
+                        }
+                    }
+                    else if (!target2)
+                    {
+                        if (enemies[i] != this.gameObject)
+                        {
+                            if (enemies[i] != target1)
+                            {
+                                target2 = enemies[i];
+                                shortestDistance = distanceToEnemy;
+                                print("next enemy OK");
+                            }
                         }
                     }
                 }
             }
-        }
 
 
-        if (target1 && !target2)
-        {
-            //Graphics
-            _renderer.positionCount = 3;
-            _renderer.SetPosition(2, target1.transform.position);
+            if (target1 && !target2)
+            {
+                //Graphics
+                _renderer.positionCount = 3;
+                _renderer.SetPosition(2, target1.transform.position);
 
-            //Mechanics
-            this.TakeDamage(_enemyDamageOverTime * Time.deltaTime);
-            this.speed *= (1f - _slowAmount);
-            
+                //Mechanics
+                this.TakeDamage(_enemyDamageOverTime * Time.deltaTime);
+                this.speed *= (1f - _slowAmount);
 
-            target1.GetComponent<Enemy_test>().TakeDamage(_otherEnemyDamage * Time.deltaTime);
-            target1.GetComponent<Enemy_test>().speed *= (1f - _slowAmount);
-            target1.GetComponent<Enemy_test>().iceRayEffected = true;
-            target1.GetComponent<Enemy_test>().iceRayEffectIcon.enabled = true;
 
-        }
-        else if (!target1 && target2)
-        {
-            //Graphics
-            _renderer.positionCount = 3;
-            _renderer.SetPosition(2, target2.transform.position);
+                target1.GetComponent<Enemy_test>().TakeDamage(_otherEnemyDamage * Time.deltaTime);
+                target1.GetComponent<Enemy_test>().speed *= (1f - _slowAmount);
+                target1.GetComponent<Enemy_test>().iceRayEffected = true;
+                target1.GetComponent<Enemy_test>().iceRayEffectIcon.enabled = true;
 
-            //Mechanics
-            this.TakeDamage(_enemyDamageOverTime * Time.deltaTime);
-            this.speed *= (1f - _slowAmount);
+            }
+            else if (!target1 && target2)
+            {
+                //Graphics
+                _renderer.positionCount = 3;
+                _renderer.SetPosition(2, target2.transform.position);
 
-            target2.GetComponent<Enemy_test>().TakeDamage(_otherEnemyDamage * Time.deltaTime);
-            target2.GetComponent<Enemy_test>().speed *= (1f - _slowAmount);
-            target2.GetComponent<Enemy_test>().iceRayEffected = true;
-            target2.GetComponent<Enemy_test>().iceRayEffectIcon.enabled = true;
-        }
-        else if (target1 && target2)
-        {
-            //Graphics
-            _renderer.positionCount = 6;
-            _renderer.SetPosition(2, target1.transform.position);
-            _renderer.SetPosition(3, this.transform.position);
+                //Mechanics
+                this.TakeDamage(_enemyDamageOverTime * Time.deltaTime);
+                this.speed *= (1f - _slowAmount);
 
-            _renderer.SetPosition(4, target2.transform.position);
-            _renderer.SetPosition(5, this.transform.position);
+                target2.GetComponent<Enemy_test>().TakeDamage(_otherEnemyDamage * Time.deltaTime);
+                target2.GetComponent<Enemy_test>().speed *= (1f - _slowAmount);
+                target2.GetComponent<Enemy_test>().iceRayEffected = true;
+                target2.GetComponent<Enemy_test>().iceRayEffectIcon.enabled = true;
+            }
+            else if (target1 && target2)
+            {
+                //Graphics
+                _renderer.positionCount = 6;
+                _renderer.SetPosition(2, target1.transform.position);
+                _renderer.SetPosition(3, this.transform.position);
 
-            //Mechanics
-            this.TakeDamage(_enemyDamageOverTime * Time.deltaTime);
-            this.speed *= (1f - _slowAmount);
+                _renderer.SetPosition(4, target2.transform.position);
+                _renderer.SetPosition(5, this.transform.position);
 
-            target1.GetComponent<Enemy_test>().TakeDamage(_otherEnemyDamage * Time.deltaTime);
-            target1.GetComponent<Enemy_test>().speed *= (1f - _slowAmount);
-            target1.GetComponent<Enemy_test>().iceRayEffected = true;
-            target1.GetComponent<Enemy_test>().iceRayEffectIcon.enabled = true;
+                //Mechanics
+                this.TakeDamage(_enemyDamageOverTime * Time.deltaTime);
+                this.speed *= (1f - _slowAmount);
 
-            target2.GetComponent<Enemy_test>().TakeDamage(_otherEnemyDamage * Time.deltaTime);
-            target2.GetComponent<Enemy_test>().speed *= (1f - _slowAmount);
-            target2.GetComponent<Enemy_test>().iceRayEffected = true;
-            target2.GetComponent<Enemy_test>().iceRayEffectIcon.enabled = true;
-        }
-        else
-        {
-            //Graphics
-            _renderer.positionCount = 2;
+                target1.GetComponent<Enemy_test>().TakeDamage(_otherEnemyDamage * Time.deltaTime);
+                target1.GetComponent<Enemy_test>().speed *= (1f - _slowAmount);
+                target1.GetComponent<Enemy_test>().iceRayEffected = true;
+                target1.GetComponent<Enemy_test>().iceRayEffectIcon.enabled = true;
 
-            //Mechanics
-            this.TakeDamage((_enemyDamageOverTime)* _singleTargetDamageMultiplier * Time.deltaTime);
-            this.speed *= (1f - _slowAmount);
+                target2.GetComponent<Enemy_test>().TakeDamage(_otherEnemyDamage * Time.deltaTime);
+                target2.GetComponent<Enemy_test>().speed *= (1f - _slowAmount);
+                target2.GetComponent<Enemy_test>().iceRayEffected = true;
+                target2.GetComponent<Enemy_test>().iceRayEffectIcon.enabled = true;
+            }
+            else
+            {
+                //Graphics
+                _renderer.positionCount = 2;
 
+                //Mechanics
+                this.TakeDamage((_enemyDamageOverTime) * _singleTargetDamageMultiplier * Time.deltaTime);
+                this.speed *= (1f - _slowAmount);
+
+            }
         }
 
         Invoke("ResetIceRayEffect", _slowTime);

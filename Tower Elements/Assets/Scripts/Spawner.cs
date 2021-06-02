@@ -27,33 +27,48 @@ public class Spawner : MonoBehaviour
     private int waveIndex = 0;
     WaveBluePrint Wave;
 
+    private void Awake()
+    {
+        countdown = timeBetweenWaves;
+    }
+
     private void Update()
     {
         print(enemiesAlive);
-        if (enemiesAlive > 1)
-        {
-            return;
-        }
 
-        if (countdown <= 0f)
+        if (enemiesAlive > 0)
         {
-            if (!AutoRound())
-            {
-
-            }
-            StartCoroutine(SpawnWave());
-            countdown = Wave.timeToNextWave;
-            
             return;
         }
 
         countdown -= Time.deltaTime;
-
         countdown = Mathf.Clamp(countdown, 0f, Mathf.Infinity);
         waveCountDownText.text = string.Format("{0:00.00}", countdown);
+
+        if (countdown <= 0f) // se o cronometro zerar
+        {
+            print("zerou o cronometro");
+
+            if (!PassRound())// e não estiver ativado o passador de Round
+            {
+                print("não pode passar automatico");
+                return;
+            }
+            if (enemiesAlive > 0)// e se tiver algum inimigo vivo
+            {
+                print("tem inimigos vivos");
+                return;
+            }
+            else
+            {
+                print("tudo ok, spawna memo");
+                StartCoroutine(SpawnWave());
+                countdown = timeBetweenWaves;
+            }
+        }
     }
 
-    public bool AutoRound()
+    public bool PassRound()
     {
 
 

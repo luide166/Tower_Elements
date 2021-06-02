@@ -5,35 +5,31 @@ using UnityEngine.EventSystems;
 
 public class Node : MonoBehaviour
 {
+    [Header("Unity Stats")]
 
-    //[HideInInspector]
-    public GameObject turret;
-    [HideInInspector]
-    public TurretBluePrint turretBlueprint;
+    [HideInInspector] public GameObject turret;
+    [HideInInspector] public TurretBluePrint turretBlueprint;
     public TurretBluePrint actualTurretBluePrint;
-    [Space(10)]
-
-
+    public int turretLevel;
     public int sellPercentage;
-
     public Vector3 offset;
 
     BuildManager buildManager;
 
-    [Header("Visual Stuff")]
-    public Color hoverColor;
-    private Color startColor;
-    public Color notMoneyColor;
-    private Renderer rend;
+    [Header("VFX Stuff")]
+    [Space(5)]
+    public GameObject canBuildEffect;
+    public GameObject cantBuildEffect;
+    public GameObject[] fireEffect;
+    public GameObject[] iceEffect;
+    public GameObject[] iceRayEffect;
+    public GameObject[] lightiningEffect;
+    public GameObject[] poisonEffect;
 
     private void Start()
     {
-        rend = GetComponent<Renderer>();
-        startColor = this.rend.material.color;
-        print(startColor);
-
-
         buildManager = BuildManager.instance;
+
     }
 
 
@@ -51,12 +47,12 @@ public class Node : MonoBehaviour
 
         if (buildManager.hasMoney)
         {
-            rend.material.color = hoverColor;
+            canBuildEffect.SetActive(true);
 
         }
         else
         {
-            rend.material.color = notMoneyColor;
+            cantBuildEffect.SetActive(true);
         }
     }
 
@@ -86,7 +82,8 @@ public class Node : MonoBehaviour
 
     private void OnMouseExit()
     {
-        rend.material.color = startColor;
+        canBuildEffect.SetActive(false);
+        cantBuildEffect.SetActive(false);
 
         if (EventSystem.current.IsPointerOverGameObject())
         {
@@ -105,6 +102,9 @@ public class Node : MonoBehaviour
 
         GameObject _turret = Instantiate(_blueprint.turretPrefab, GetBuildPosition(), _blueprint.turretPrefab.transform.rotation);
         turret = _turret;
+
+        turretLevel = 0;
+        VerifyTurretLevel();
 
         // faz mandar o efeito certo
         //GameObject effect = Instantiate(_blueprint.buildEffect, GetBuildPosition(), Quaternion.identity);
@@ -490,6 +490,8 @@ public class Node : MonoBehaviour
 
         }
 
+        turretLevel++;
+        VerifyTurretLevel();
     }
 
     public void UpgradeTwo()
@@ -871,6 +873,9 @@ public class Node : MonoBehaviour
                 #endregion
 
         }
+
+        turretLevel++;
+        VerifyTurretLevel();
     }
 
     public void UpgradeThree()
@@ -1237,6 +1242,9 @@ public class Node : MonoBehaviour
 
                 #endregion
         }
+
+        turretLevel++;
+        VerifyTurretLevel();
     }
 
     public void SellTurret()
@@ -1251,6 +1259,7 @@ public class Node : MonoBehaviour
         Destroy(turret);
         print(buildManager.canBuild);
         actualTurretBluePrint = null;
+        turretLevel = 0;
 
     }
 
@@ -1293,4 +1302,138 @@ public class Node : MonoBehaviour
         return this.transform.position + offset;
     }
 
+    void ActualizeNodeVFX()
+    {
+        TurretBluePrint bluePrint = actualTurretBluePrint;
+
+        DesactivateNodeVFX();
+
+        switch (bluePrint.turretName)
+        {
+            case TurretName.Fire:
+                switch (bluePrint.turretLevel)
+                {
+                    case 0:
+                        fireEffect[0].SetActive(true);
+                        break;
+                    case 3:
+                        fireEffect[1].SetActive(true);
+                        break;
+                    case 6:
+                        fireEffect[2].SetActive(true);
+                        break;
+                    case 9:
+                        fireEffect[3].SetActive(true);
+                        break;
+                }
+                break;
+            case TurretName.Ice:
+                switch (bluePrint.turretLevel)
+                {
+                    case 0:
+                        iceEffect[0].SetActive(true);
+                        break;
+                    case 3:
+                        iceEffect[1].SetActive(true);
+                        break;
+                    case 6:
+                        iceEffect[2].SetActive(true);
+                        break;
+                    case 9:
+                        iceEffect[3].SetActive(true);
+                        break;
+                }
+                break;
+            case TurretName.IceRay:
+                switch (bluePrint.turretLevel)
+                {
+                    case 0:
+                        iceRayEffect[0].SetActive(true);
+                        break;
+                    case 3:
+                        iceRayEffect[1].SetActive(true);
+                        break;
+                    case 6:
+                        iceRayEffect[2].SetActive(true);
+                        break;
+                }
+                break;
+            case TurretName.Lightining:
+                switch (bluePrint.turretLevel)
+                {
+                    case 0:
+                        lightiningEffect[0].SetActive(true);
+                        break;
+                    case 3:
+                        lightiningEffect[1].SetActive(true);
+                        break;
+                    case 6:
+                        lightiningEffect[2].SetActive(true);
+                        break;
+                    case 9:
+                        lightiningEffect[3].SetActive(true);
+                        break;
+                }
+                break;
+            case TurretName.Poison:
+                switch (bluePrint.turretLevel)
+                {
+                    case 0:
+
+                        break;
+                    case 3:
+
+                        break;
+                    case 6:
+
+                        break;
+                }
+                break;
+            default:
+                print("Node não tem efeito");
+                break;
+        }
+    }
+
+    void DesactivateNodeVFX()
+    {
+        fireEffect[0].SetActive(false);
+        fireEffect[1].SetActive(false);
+        fireEffect[2].SetActive(false);
+        fireEffect[3].SetActive(false);
+        iceEffect[0].SetActive(false);
+        iceEffect[1].SetActive(false);
+        iceEffect[2].SetActive(false);
+        iceEffect[3].SetActive(false);
+        iceRayEffect[0].SetActive(false);
+        iceRayEffect[1].SetActive(false);
+        iceRayEffect[2].SetActive(false);
+        lightiningEffect[0].SetActive(false);
+        lightiningEffect[1].SetActive(false);
+        lightiningEffect[2].SetActive(false);
+        lightiningEffect[3].SetActive(false);
+        poisonEffect[0].SetActive(false);
+        poisonEffect[1].SetActive(false);
+        poisonEffect[2].SetActive(false);
+    }
+
+    void VerifyTurretLevel()
+    {
+        if(turretLevel == 0)
+        {
+            ActualizeNodeVFX();
+        }
+        else if (turretLevel == 3)
+        {
+            ActualizeNodeVFX();
+        }
+        else if (turretLevel == 6)
+        {
+            ActualizeNodeVFX();
+        }
+        else if (turretLevel == 9)
+        {
+            ActualizeNodeVFX();
+        }
+    }
 }

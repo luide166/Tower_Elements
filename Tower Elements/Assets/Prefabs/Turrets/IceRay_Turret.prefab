@@ -259,7 +259,7 @@ MonoBehaviour:
   effectTimer: 5
   damageOtherTargets: 10
   singleTargerDamageMultiplier: 1.2
-  rangeOfEffect: 3
+  rangeOfEffect: 10
   bulletPrefab: {fileID: 0}
   fireRate: 1
 --- !u!120 &1419237451511131880
