@@ -147,7 +147,7 @@ VisualEffectResource:
       VFX_USE_POSITION_CURRENT 1\n#define VFX_USE_VELOCITY_CURRENT 1\n#define VFX_USE_LIFETIME_CURRENT
       1\n#define VFX_USE_TARGETPOSITION_CURRENT 1\n#define VFX_USE_AGE_CURRENT 1\n#define
       VFX_USE_ALIVE_CURRENT 1\n#define VFX_WORLD_SPACE 1\n#include \"Packages/com.unity.render-pipelines.high-definition/Runtime/VFXGraph/Shaders/VFXDefines.hlsl\"\n\n\r\nCBUFFER_START(parameters)\n   
-      float4x4 uniform_b;\n    float3 A_c;\n    float A_d;\n    float3 B_c;\n   
+      float4x4 uniform_a;\n    float3 A_c;\n    float A_d;\n    float3 B_c;\n   
       float B_d;\nCBUFFER_END\n\nstruct Attributes\n{\n    float angleX;\n    float
       angleY;\n    float angleZ;\n    uint seed;\n    float3 position;\n    float3
       velocity;\n    float lifetime;\n    float3 targetPosition;\n    float age;\n   
@@ -217,7 +217,7 @@ VisualEffectResource:
       with strip\r\n#endif\r\n        \r\n        {\n            SetAttribute_48A7C215(
       /*inout */attributes.angleX,  /*inout */attributes.angleY,  /*inout */attributes.angleZ, 
       /*inout */attributes.seed, float3(0, 0, -720), float3(0, 0, 720));\n       
-      }\n        {\n            float3 tmp_bc = mul(uniform_b, float4(attributes.targetPosition,
+      }\n        {\n            float3 tmp_bc = mul(uniform_a, float4(attributes.targetPosition,
       1.0)).xyz;\n            SetAttribute_CAC29747( /*inout */attributes.position,
       tmp_bc);\n        }\n        SetAttribute_E6295C0( /*inout */attributes.velocity, 
       /*inout */attributes.seed, A_c, B_c);\n        SetAttribute_F01429A3( /*inout
@@ -348,7 +348,7 @@ VisualEffectResource:
       pivotY;\n\t\t    float pivotZ;\n\t\t    float size;\n\t\t    float scaleX;\n\t\t   
       float scaleY;\n\t\t    float scaleZ;\n\t\t    float texIndex;\n\t\t};\n\t\t\n\t\tstruct
       SourceAttributes\n\t\t{\n\t\t};\n\t\t\n\t\tTexture2D mainTexture;\n\t\tSamplerState
-      samplermainTexture;\n\t\tfloat4 mainTexture_TexelSize;\n\t\t\n\n\t\t\n\t\t#define
+      samplermainTexture;\n\t\tfloat4 mainTexture_TexelSize;\n\t\t\n\t\t\n\n\t\t\n\t\t#define
       VFX_NEEDS_COLOR_INTERPOLATOR (VFX_USE_COLOR_CURRENT || VFX_USE_ALPHA_CURRENT)\n\t\t#if
       HAS_STRIPS\n\t\t#define VFX_OPTIONAL_INTERPOLATION \n\t\t#else\n\t\t#define
       VFX_OPTIONAL_INTERPOLATION nointerpolation\n\t\t#endif\n\t\t\n\t\tByteAddressBuffer
@@ -480,8 +480,8 @@ VisualEffectResource:
       attributes, stripData);\n\t\t\t\t\t\t#endif\n\t\t\t\t\t\t\t\n\t\t\t\tOrient_4(
       /*inout */attributes.axisX,  /*inout */attributes.axisY,  /*inout */attributes.axisZ);\n\t\t\t\t{\n\t\t\t\t   
       SetAttribute_3278B545( /*inout */attributes.size,  /*inout */attributes.seed,
-      (float)1.79999995, (float)2.79999995);\n\t\t\t\t}\n\t\t\t\tAttributeFromCurve_7DF18695(
-      /*inout */attributes.size, attributes.age, attributes.lifetime, Size_c);\n\t\t\t\tAttributeFromCurve_E38970BB(
+      (float)1.5, (float)2);\n\t\t\t\t}\n\t\t\t\tAttributeFromCurve_7DF18695( /*inout
+      */attributes.size, attributes.age, attributes.lifetime, Size_c);\n\t\t\t\tAttributeFromCurve_E38970BB(
       /*inout */attributes.texIndex, attributes.age, attributes.lifetime, TexIndex_d);\n\t\t\t\tAttributeFromCurve_501DDD5B(
       /*inout */attributes.color,  /*inout */attributes.alpha,  /*inout */attributes.seed,
       Color_e);\n\t\t\t\t\n\n\t\t\t\t\n\t\t\t#if !HAS_STRIPS\n\t\t\t\tif (!attributes.alive)\n\t\t\t\t\treturn
@@ -707,8 +707,8 @@ VisualEffectResource:
       attributes, stripData);\n\t\t\t\t\t\t#endif\n\t\t\t\t\t\t\t\n\t\t\t\tOrient_4(
       /*inout */attributes.axisX,  /*inout */attributes.axisY,  /*inout */attributes.axisZ);\n\t\t\t\t{\n\t\t\t\t   
       SetAttribute_3278B545( /*inout */attributes.size,  /*inout */attributes.seed,
-      (float)1.79999995, (float)2.79999995);\n\t\t\t\t}\n\t\t\t\tAttributeFromCurve_7DF18695(
-      /*inout */attributes.size, attributes.age, attributes.lifetime, Size_c);\n\t\t\t\tAttributeFromCurve_E38970BB(
+      (float)1.5, (float)2);\n\t\t\t\t}\n\t\t\t\tAttributeFromCurve_7DF18695( /*inout
+      */attributes.size, attributes.age, attributes.lifetime, Size_c);\n\t\t\t\tAttributeFromCurve_E38970BB(
       /*inout */attributes.texIndex, attributes.age, attributes.lifetime, TexIndex_d);\n\t\t\t\tAttributeFromCurve_501DDD5B(
       /*inout */attributes.color,  /*inout */attributes.alpha,  /*inout */attributes.seed,
       Color_e);\n\t\t\t\t\n\n\t\t\t\t\n\t\t\t#if !HAS_STRIPS\n\t\t\t\tif (!attributes.alive)\n\t\t\t\t\treturn
@@ -1059,11 +1059,11 @@ VisualEffectResource:
         - m_ExpressionIndex: 8
           m_Value: 0.5
         - m_ExpressionIndex: 14
-          m_Value: 2.8
+          m_Value: 2
         - m_ExpressionIndex: 15
           m_Value: 999.99994
         - m_ExpressionIndex: 16
-          m_Value: 1.8
+          m_Value: 1.5
         - m_ExpressionIndex: 18
           m_Value: 64
         - m_ExpressionIndex: 26
@@ -1415,7 +1415,7 @@ VisualEffectResource:
         index: 1
       temporaryBuffers: []
       values:
-      - nameId: uniform_b
+      - nameId: uniform_a
         index: 5
       - nameId: A_c
         index: 23
@@ -3254,7 +3254,7 @@ MonoBehaviour:
   m_UISuperCollapsed: 0
   m_InputSlots:
   - {fileID: 8926484042661614797}
-  - {fileID: 8926484042661614800}
+  - {fileID: 8926484042661614841}
   - {fileID: 8926484042661614801}
   m_OutputSlots: []
   m_Label: Smoke AB
@@ -3385,46 +3385,6 @@ MonoBehaviour:
       m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
     attributes: []
-  m_Direction: 0
-  m_LinkedSlots: []
---- !u!114 &8926484042661614800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f780aa281814f9842a7c076d436932e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Parent: {fileID: 0}
-  m_Children: []
-  m_UIPosition: {x: 0, y: 0}
-  m_UICollapsed: 1
-  m_UISuperCollapsed: 0
-  m_MasterSlot: {fileID: 8926484042661614800}
-  m_MasterData:
-    m_Owner: {fileID: 8926484042661614796}
-    m_Value:
-      m_Type:
-        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0.001
-    m_Space: 2147483647
-  m_Property:
-    name: softParticlesFadeDistance
-    m_serializedType:
-      m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-    attributes:
-    - m_Type: 1
-      m_Min: 0.001
-      m_Max: Infinity
-      m_Tooltip: 
-      m_Regex: 
-      m_RegexMaxLength: 0
   m_Direction: 0
   m_LinkedSlots: []
 --- !u!114 &8926484042661614801
@@ -3559,7 +3519,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 1.8
+      m_SerializableObject: 1.5
     m_Space: 2147483647
   m_Property:
     name: A
@@ -3599,7 +3559,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 2.8
+      m_SerializableObject: 2
     m_Space: 2147483647
   m_Property:
     name: B
@@ -4317,3 +4277,43 @@ MonoBehaviour:
   m_Direction: 1
   m_LinkedSlots:
   - {fileID: 8926484042661614814}
+--- !u!114 &8926484042661614841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f780aa281814f9842a7c076d436932e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Parent: {fileID: 0}
+  m_Children: []
+  m_UIPosition: {x: 0, y: 0}
+  m_UICollapsed: 1
+  m_UISuperCollapsed: 0
+  m_MasterSlot: {fileID: 8926484042661614841}
+  m_MasterData:
+    m_Owner: {fileID: 8926484042661614796}
+    m_Value:
+      m_Type:
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      m_SerializableObject: 0.001
+    m_Space: 2147483647
+  m_Property:
+    name: softParticleFadeDistance
+    m_serializedType:
+      m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+    attributes:
+    - m_Type: 1
+      m_Min: 0.001
+      m_Max: Infinity
+      m_Tooltip: 
+      m_Regex: 
+      m_RegexMaxLength: 0
+  m_Direction: 0
+  m_LinkedSlots: []

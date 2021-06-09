@@ -45,6 +45,7 @@ public class Enemy_test : MonoBehaviour
     [Space(10)]
     [HideInInspector] public GameObject target1 = null;
     [HideInInspector] public GameObject target2 = null;
+    private Vector3 offsetLineRenderer = new Vector3(0, 1f, 0);
 
     [Header("1) - Effected By:")]
     [Space(5)]
@@ -291,7 +292,7 @@ public class Enemy_test : MonoBehaviour
         {
             //Graphics
             _renderer.positionCount = 3;
-            _renderer.SetPosition(2, target1.transform.position);
+            _renderer.SetPosition(2, target1.transform.position + offsetLineRenderer);
 
             //Mechanics
             this.TakeDamage(_enemyDamageOverTime * Time.deltaTime);
@@ -308,7 +309,7 @@ public class Enemy_test : MonoBehaviour
         {
             //Graphics
             _renderer.positionCount = 3;
-            _renderer.SetPosition(2, target2.transform.position);
+            _renderer.SetPosition(2, target2.transform.position + offsetLineRenderer);
 
             //Mechanics
             this.TakeDamage(_enemyDamageOverTime * Time.deltaTime);
@@ -323,11 +324,11 @@ public class Enemy_test : MonoBehaviour
         {
             //Graphics
             _renderer.positionCount = 6;
-            _renderer.SetPosition(2, target1.transform.position);
-            _renderer.SetPosition(3, this.transform.position);
+            _renderer.SetPosition(2, target1.transform.position + offsetLineRenderer);
+            _renderer.SetPosition(3, this.transform.position + offsetLineRenderer);
 
-            _renderer.SetPosition(4, target2.transform.position);
-            _renderer.SetPosition(5, this.transform.position);
+            _renderer.SetPosition(4, target2.transform.position + offsetLineRenderer);
+            _renderer.SetPosition(5, this.transform.position + offsetLineRenderer);
 
             //Mechanics
             this.TakeDamage(_enemyDamageOverTime * Time.deltaTime);
@@ -400,7 +401,7 @@ public class Enemy_test : MonoBehaviour
         {
             //Graphics
             _renderer.positionCount = 3;
-            _renderer.SetPosition(2, target1.transform.position);
+            _renderer.SetPosition(2, target1.transform.position + offsetLineRenderer);
 
             //Mechanics
             target1.GetComponent<Enemy_test>().TakeDamage(_enemyDamageOverTime * Time.deltaTime);
@@ -410,7 +411,7 @@ public class Enemy_test : MonoBehaviour
         {
             //Graphics
             _renderer.positionCount = 3;
-            _renderer.SetPosition(2, target2.transform.position);
+            _renderer.SetPosition(2, target2.transform.position + offsetLineRenderer);
 
             //Mechanics
             target2.GetComponent<Enemy_test>().TakeDamage(_enemyDamageOverTime * Time.deltaTime);
@@ -419,10 +420,10 @@ public class Enemy_test : MonoBehaviour
         {
             //Graphics
             _renderer.positionCount = 6;
-            _renderer.SetPosition(2, target1.transform.position);
-            _renderer.SetPosition(3, this.transform.position);
-            _renderer.SetPosition(4, target2.transform.position);
-            _renderer.SetPosition(5, this.transform.position);
+            _renderer.SetPosition(2, target1.transform.position + offsetLineRenderer);
+            _renderer.SetPosition(3, this.transform.position + offsetLineRenderer);
+            _renderer.SetPosition(4, target2.transform.position + offsetLineRenderer);
+            _renderer.SetPosition(5, this.transform.position + offsetLineRenderer);
 
             //Mechanics
             target1.GetComponent<Enemy_test>().TakeDamage(_enemyDamageOverTime * Time.deltaTime);

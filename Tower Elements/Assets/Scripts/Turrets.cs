@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public enum TurretName
 {
@@ -34,13 +35,16 @@ public class Turrets : MonoBehaviour
 
     [Header("With Laser")]
     [Space(15)]
+    public bool useVFXAtak;
     public LineRenderer lineRenderer;
+    public VisualEffect vfxRenderer;
     public float damageOverTime = 30;
     public float speedModifier; // max value is 1
     public float effectTimer;
     public float damageOtherTargets;
     public float singleTargerDamageMultiplier;
     public float rangeOfEffect;
+    private Vector3 offsetLineRenderer = new Vector3(0, 1f, 0);
 
     [Header("With Bullets")]
     [Space(15)]
@@ -55,6 +59,7 @@ public class Turrets : MonoBehaviour
         InvokeRepeating("UpdateTarget", 0f, 0.25f);
         lineRenderer = GetComponent<LineRenderer>();
         targetEnemy = GetComponent<Enemy_test>();
+        // Instantiate(vfxRenderer, firePoint.transform.position, firePoint.transform.rotation);
 
     }
 
@@ -68,6 +73,10 @@ public class Turrets : MonoBehaviour
                 if (lineRenderer.enabled)
                 {
                     lineRenderer.enabled = false;
+                }
+                else if (vfxRenderer.enabled)
+                {
+                    vfxRenderer.Stop();
                 }
             }
 
@@ -174,8 +183,15 @@ public class Turrets : MonoBehaviour
             return;
         }
 
-        lineRenderer.SetPosition(0, firePoint.transform.position);
-        lineRenderer.SetPosition(1, target.position);
+        if(useVFXAtak == false)
+        {
+            lineRenderer.SetPosition(0, firePoint.transform.position);
+            lineRenderer.SetPosition(1, target.position + offsetLineRenderer);
+        }
+        else
+        {
+            vfxRenderer.Play();
+        }
 
         //Mechanics
         switch (turretName)
